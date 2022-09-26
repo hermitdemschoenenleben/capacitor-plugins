@@ -61,15 +61,29 @@ import org.json.JSONException;
         @Permission(strings = { Manifest.permission.CAMERA }, alias = CameraPlugin.CAMERA),
         @Permission(
             strings = { Manifest.permission.READ_EXTERNAL_STORAGE, Manifest.permission.WRITE_EXTERNAL_STORAGE },
-            alias = CameraPlugin.PHOTOS
-        )
+            alias = CameraPlugin.PHOTOS_OLD
+        ),
+        @Permission(
+            strings = { Manifest.permission.READ_MEDIA_IMAGES },
+            alias = CameraPlugin.PHOTOS_NEW
+        ),
     }
 )
 public class CameraPlugin extends Plugin {
 
     // Permission alias constants
     static final String CAMERA = "camera";
-    static final String PHOTOS = "photos";
+    static final String PHOTOS_OLD = "photos_old";
+    static final String PHOTOS_NEW = "photos_new";
+
+    String PHOTOS;
+    public CameraPlugin() {
+      if (Build.VERSION.SDK_INT < 33) {
+        PHOTOS = PHOTOS_OLD;
+      } else {
+        PHOTOS = PHOTOS_NEW;
+      }
+    }
 
     // Message constants
     private static final String INVALID_RESULT_TYPE_ERROR = "Invalid resultType option";
